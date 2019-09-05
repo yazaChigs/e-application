@@ -1,21 +1,146 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<h1>ELECTRONIC APPLICATION FORM</h1>
+      <form [formGroup]="form" (submit)="submit()">
+        <mat-card >
+          <mat-toolbar color="primary">User Profile</mat-toolbar>
+
+                 <!--  -->
+                 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="10%">
+                <p>
+                  <mat-label class="full-width">Name</mat-label>
+                </p>
+              </div>
+              <div fxFlex="35%">
+                  <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Name</mat-label>
+                      <input  matInput formControlName="name" placeholder="name">
+                    </mat-form-field>
+                    <span class="text-danger" *ngIf="form.controls['name'].touched && form.controls['name'].hasError('required')">
+                      Name is required! </span>
+              </div>
+              <div fxFlex="10%">
+                  <p>
+                      <mat-label class="full-width">Organization</mat-label>
+                    </p>
+              </div>
+              <div fxFlex="35%">
+                  <mat-form-field class="full-width" appearance="outline">
+                      <mat-label>Organization</mat-label>
+                  <input matInput class="form-control" formControlName="organization" type="text">
+                </mat-form-field>
+              </div>
+            </div>
+
+          <!-- Dynamic  -->
+
+          <mat-card >Contact Information</mat-card>
+          <div class="card-body" formArrayName="contacts">
+            <div class="row">
+              <div class="col-6" *ngFor="let contact of contactFormGroup.controls; let i = index;">
+                <div [formGroupName]="i" class="row">
+                    <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="left" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="55%">
+                  <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Question</mat-label>
+                          <textarea matInput class="form-control" formControlName="answer"></textarea>
+                        </mat-form-field>
+                        <span *ngIf="selected === 'text'">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label>Answer</mat-label>
+                                <input matInput class="form-control" formControlName="answer" type="text">
+                              </mat-form-field>
+                        </span>
+                        <span *ngIf="selected === 'select'">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Type of Question</mat-label>
+                                <mat-select formControlName="type">
+                                <mat-option *ngFor="let q of questionType" [value]="q">{{q}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                        </span>
+                        <span *ngIf="selected === 'radio'">
+                            <mat-radio-group placeholder="Select an option">
+                                <mat-radio-button formControlName="answer" value="1">Option 1</mat-radio-button>
+                                <mat-radio-button formControlName="answer" value="2">Option 2</mat-radio-button>
+                                <mat-radio-button formControlName="answer" value="3">Option 3</mat-radio-button>
+                              </mat-radio-group>
+                        </span>
+                        <span *ngIf="selected === 'check box'">
+                            <mat-checkbox formControlName="answer">1</mat-checkbox>
+                            <mat-checkbox formControlName="answer">2</mat-checkbox>
+                            <mat-checkbox formControlName="answer">3</mat-checkbox>
+                        </span>
+                        <span *ngIf="selected === 'number'">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label>Answer</mat-label>
+                                <input matInput class="form-control" formControlName="answer" type="number">
+                              </mat-form-field>
+                        </span>
+                        <span class="text-danger" *ngIf="getContactsFormGroup(i).controls['question'].touched && getContactsFormGroup(i).controls['question'].hasError('required')">
+                          Label is required! </span>
+                          </div>
+              <div fxFlex="25%">
+                  <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+              <div fxFlex="100%">
+                  <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Type of Question</mat-label>
+                      <mat-select [(value)]="selected" formControlName="type">
+                      <mat-option *ngFor="let q of questionType" [value]="q">{{q}}</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                    </div>
+          </div>
+          <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+
+              <div fxFlex="50%">
+                  <mat-form-field class="full-width" appearance="outline">
+                        <mat-label>Question Weighting</mat-label>
+                        <input matInput class="form-control" formControlName="weight" type="number">
+                      </mat-form-field>
+                      <span class="text-danger" *ngIf="getContactsFormGroup(i).controls['weight'].touched && getContactsFormGroup(i).controls['weight'].hasError('required')">
+                        Label is required! </span>
+              </div>
+              <div fxFlex="50%">
+                  <mat-checkbox formControlName="required">Required</mat-checkbox>
+                          <span class="text-danger" *ngIf="getContactsFormGroup(i).controls['required'].touched && getContactsFormGroup(i).controls['required'].hasError('required')">
+                            Label is required! </span>
+                        </div>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+          </div>
+          <div fxFlex="25%">
+              <!-- <button mat-stroked-button color="primary" class="btn btn-primary m-1" type="button" (click)="addContact()"> Add Position </button> -->
+              <button mat-stroked-button color="primary" class="btn btn-primary m-1" type="button" (click)="addContact()"> Add Contact </button>
+                    <button mat-stroked-button color="warn" class="btn btn-danger" type="button" (click)="removeContact(i)"> Remove </button>
+              <!-- <button mat-stroked-button color="primary" class="btn btn-success m-1" [disabled]="!form.valid" type="submit"> Save User Profile </button> -->
+            </div>
+            <mat-divider insert="true"></mat-divider>
+          </div>
+                  <!-- <div class="form-group col-12">
+                    <mat-label>Email/Phone No.</mat-label>
+                    <mat-form-field appearance="outline">
+                      <input matInput class="form-control" formControlName="value" type="text">
+                    </mat-form-field>
+                    <span class="text-danger" *ngIf="getContactsFormGroup(i).controls['value'].touched && getContactsFormGroup(i).controls['value'].hasError('required')">
+                      Email/Phone no is required! </span>
+                    <span class="text-danger" *ngIf="getContactsFormGroup(i).controls['value'].touched && getContactsFormGroup(i).controls['value'].hasError('email')">
+                      Email is not valid! </span>
+                    <span class="text-danger" *ngIf="getContactsFormGroup(i).controls['value'].touched && getContactsFormGroup(i).controls['value'].hasError('pattern')">
+                      Phone no. is not valid! </span>
+                  </div> -->
+                  <div class="form-group col-12 text-right">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="col-12">
+              <!-- <button mat-stroked-button color="primary" class="btn btn-primary m-1" type="button" (click)="addContact()"> Add Positß -->
+              <button mat-stroked-button color="primary" class="btn btn-success m-1" [disabled]="!form.valid" type="submit"> Save User Profile </button>
+            </div>
+          </div>
+        </mat-card>
+      </form>
+{{form.value | json}}
 
 <router-outlet></router-outlet>
